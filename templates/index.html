@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Student Management System{% endblock %}
+
+{% block content %}
+
+    <div class="stats-row">
+        <div class="stat-card">
+            <span class="stat-number">{{ total_students }}</span>
+            <span class="stat-label">Total Students</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-number">{{ total_courses }}</span>
+            <span class="stat-label">Courses</span>
+        </div>
+    </div>
+
+    <div class="page-head">
+        <h2>All Students</h2>
+        <form class="search-form" method="GET" action="{{ url_for('index') }}">
+            <input type="text" name="q" placeholder="Search by name, roll no, or course..." value="{{ query }}">
+            <button type="submit" class="btn btn-search">Search</button>
+            {% if query %}
+                <a href="{{ url_for('index') }}" class="btn btn-cancel">Clear</a>
+            {% endif %}
+        </form>
+    </div>
+
+    {% if students %}
+    <div class="table-wrap">
+        <table class="student-table">
+            <thead>
+                <tr>
+                    <th>Roll No</th>
+                    <th>Name</th>
+                    <th>Course</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                <tr>
+                    <td>{{ student.roll_no }}</td>
+                    <td>{{ student.name }}</td>
+                    <td><span class="badge">{{ student.course }}</span></td>
+                    <td>{{ student.email or '—' }}</td>
+                    <td class="actions">
+                        <a href="{{ url_for('edit_student', id=student.id) }}" class="btn btn-edit">Edit</a>
+                        <form method="POST" action="{{ url_for('delete_student', id=student.id) }}" class="inline-form" onsubmit="return confirmDelete('{{ student.name }}')">
+                            <button type="submit" class="btn btn-delete">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty-state">
+        {% if query %}
+            <p>No students match "<strong>{{ query }}</strong>".</p>
+        {% else %}
+            <p>No students added yet.</p>
+            <a href="{{ url_for('add_student') }}" class="btn btn-submit">Add your first student</a>
+        {% endif %}
+    </div>
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }} - Student Management System{% endblock %}
+
+{% block content %}
+    <div class="form-card">
+        <h2>{{ title }}</h2>
+
+        <form method="POST" class="student-form" id="studentForm">
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" value="{{ student.name if student else '' }}" placeholder="e.g. Aarav Sharma" required>
+            </div>
+
+            <div class="form-group">
+                <label for="roll_no">Roll Number</label>
+                <input type="text" id="roll_no" name="roll_no" value="{{ student.roll_no if student else '' }}" placeholder="e.g. 2026CS101" required>
+            </div>
+
+            <div class="form-group">
+                <label for="course">Course</label>
+                <input type="text" id="course" name="course" value="{{ student.course if student else '' }}" placeholder="e.g. B.Tech CSE" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" value="{{ student.email if student else '' }}" placeholder="e.g. aarav@example.com">
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-submit">Save</button>
+                <a href="{{ url_for('index') }}" class="btn btn-cancel">Cancel</a>
+            </div>
+        </form>
+    </div>
+{% endblock %}
